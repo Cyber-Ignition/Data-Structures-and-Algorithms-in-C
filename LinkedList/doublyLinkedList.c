@@ -103,7 +103,7 @@ int main() {
 
 Node* create_Node(){
     Node * head;
-    head = (Node*)malloc(sizeof(Node*));
+    head = (Node*)malloc(sizeof(Node));
     printf("Enter an integer: ");
     scanf("%d", &head->data);
     head -> next = NULL;
@@ -128,7 +128,8 @@ Node* insert_atend(Node* head){
 }
 
 Node* insert_atbegin(Node* head){
-    Node * new = create_Node();
+    Node * new;
+    new = create_Node();
     new->next = head;
     if (head != NULL)
         head->prev = new;
@@ -138,6 +139,11 @@ Node* insert_atbegin(Node* head){
 Node* insert_atany(Node* head, int x){
     int i;
     Node * ptr, *new;
+    if (x < 0)
+    {
+        printf("Position cannot be negative\n");
+        return head;
+    }
     if (x == 0)
     {
         head = insert_atbegin(head);
@@ -197,13 +203,21 @@ Node* delete_atend(Node* head){
 Node* delete_atany(Node* head, int x){
     int i;
     Node* ptr = head;
+    if (x < 0)
+    {
+        printf("Position cannot be negative\n");
+        return head;
+    }
     if (head == NULL){
         printf("Cannot delete, list is empty\n");
         return NULL;
     }
     if (head->next == NULL){
-        printf("List is empty\n");
-        return NULL;
+        if (x == 0)
+        {
+            printf("List is empty\n");
+            return NULL;
+        }
     }
     if (x == 0)
     {
