@@ -22,7 +22,7 @@ int count(Node* head);
 int main() {
     int opt, opr, x, run = 1;
     Node * head = create_Node();
-    printf("nexted-list initialized: ");
+    printf("Linked-list initialized: ");
     display_Node(head);
     while (run){
         printf("Select your option from below\n\n1-Insert\n2-Delete\n3-Search\n4-Count\n5-Reverse\n\n--->");
@@ -90,7 +90,7 @@ int main() {
             break;
         case 5:
             head = reverse_Node(head);
-            printf("The reversed nexted-list is:");
+            printf("The reversed Linked-list is:");
             display_Node(head);
             break;
         case 0:
