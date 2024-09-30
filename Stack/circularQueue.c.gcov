@@ -1,0 +1,128 @@
+        -:    0:Source:circularQueue.c
+        -:    0:Graph:.\circularQueue.gcno
+        -:    0:Data:-
+        -:    0:Runs:0
+        -:    1:#include <stdio.h>
+        -:    2:#include <stdlib.h>
+        -:    3:
+        -:    4:struct Queue {
+        -:    5:    int* items;
+        -:    6:    int front;
+        -:    7:    int rear;
+        -:    8:    int maxSize;
+        -:    9:};
+        -:   10:
+    #####:   11:struct Queue* createQueue(int size) {
+    #####:   12:    struct Queue* q = (struct Queue*)malloc(sizeof(struct Queue));
+    #####:   13:    q->items = (int*)malloc(size * sizeof(int));
+    #####:   14:    q->front = -1;
+    #####:   15:    q->rear = -1;
+    #####:   16:    q->maxSize = size;
+    #####:   17:    return q;
+        -:   18:}
+        -:   19:
+    #####:   20:int isFull(struct Queue* q) {
+    #####:   21:    if ((q->rear + 1) % q->maxSize == q->front) {
+    #####:   22:        return 1;
+        -:   23:    }
+    #####:   24:    return 0;
+        -:   25:}
+        -:   26:
+    #####:   27:int isEmpty(struct Queue* q) {
+    #####:   28:    if (q->front == -1) {
+    #####:   29:        return 1;
+        -:   30:    }
+    #####:   31:    return 0;
+        -:   32:}
+        -:   33:
+    #####:   34:void display(struct Queue* q) {
+        -:   35:    int i;
+    #####:   36:    if (isEmpty(q)) {
+    #####:   37:        printf("Queue is empty\n");
+        -:   38:    } else {
+    #####:   39:        printf("Queue elements are: ");
+    #####:   40:        for (i = q->front; i != q->rear; i = (i + 1) % q->maxSize) {
+    #####:   41:            printf("%d ", q->items[i]);
+        -:   42:        }
+    #####:   43:        printf("%d\n", q->items[i]);
+        -:   44:    }
+    #####:   45:}
+        -:   46:
+    #####:   47:void enqueue(struct Queue* q, int value) {
+    #####:   48:    if (isFull(q)) {
+    #####:   49:        printf("Queue overflow, Cannot enqueue\n");
+        -:   50:    } else {
+    #####:   51:        if (q->front == -1) {
+    #####:   52:            q->front = 0;
+        -:   53:        }
+    #####:   54:        q->rear = (q->rear + 1) % q->maxSize;
+    #####:   55:        q->items[q->rear] = value;
+    #####:   56:        printf("Enqueued %d\n", value);
+    #####:   57:        display(q);
+        -:   58:    }
+    #####:   59:}
+        -:   60:
+    #####:   61:int dequeue(struct Queue* q) {
+        -:   62:    int item;
+    #####:   63:    if (isEmpty(q)) {
+    #####:   64:        printf("Queue Underflow, Cannot dequeue\n");
+    #####:   65:        return -1;
+        -:   66:    } else {
+    #####:   67:        item = q->items[q->front];
+    #####:   68:        if (q->front == q->rear) {
+    #####:   69:            q->front = -1;
+    #####:   70:            q->rear = -1;
+        -:   71:        } else {
+    #####:   72:            q->front = (q->front + 1) % q->maxSize;
+        -:   73:        }
+    #####:   74:        printf("Dequeued %d\n", item);
+    #####:   75:        display(q);
+    #####:   76:        return item;
+        -:   77:    }
+        -:   78:}
+        -:   79:
+    #####:   80:void menu() {
+    #####:   81:    printf("\nSelect an operation from below:\n\n");
+    #####:   82:    printf("1. Enqueue\n");
+    #####:   83:    printf("2. Dequeue\n");
+    #####:   84:    printf("3. Exit\n");
+    #####:   85:    printf("Enter your choice: ");
+    #####:   86:}
+        -:   87:
+    #####:   88:int main() {
+        -:   89:    int queueSize;
+    #####:   90:    printf("Enter the maximum size of the queue: ");
+    #####:   91:    scanf("%d", &queueSize);
+        -:   92:
+    #####:   93:    struct Queue* q = createQueue(queueSize);
+        -:   94:    int choice, value;
+        -:   95:
+    #####:   96:    printf("Enter an integer to begin: ");
+    #####:   97:    scanf("%d", &value);
+    #####:   98:    enqueue(q, value);
+        -:   99:
+        -:  100:    while (1) {
+    #####:  101:        menu();
+    #####:  102:        scanf("%d", &choice);
+        -:  103:
+    #####:  104:        switch (choice) {
+    #####:  105:            case 1:
+    #####:  106:                printf("Enter value to enqueue: ");
+    #####:  107:                scanf("%d", &value);
+    #####:  108:                enqueue(q, value);
+    #####:  109:                break;
+    #####:  110:            case 2:
+    #####:  111:                dequeue(q);
+    #####:  112:                break;
+    #####:  113:            case 3:
+    #####:  114:                printf("Exiting...\n");
+    #####:  115:                free(q->items);
+        -:  116:                free(q);
+    #####:  117:                exit(0);
+    #####:  118:            default:
+    #####:  119:                printf("Invalid choice! Please choose a valid option.\n");
+        -:  120:        }
+        -:  121:    }
+        -:  122:
+        -:  123:    return 0;
+        -:  124:}
